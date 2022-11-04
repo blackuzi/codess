@@ -39,13 +39,11 @@ class graphs
                   }
               }
           }
-         
+    
+          return distance[dest]; 
 		}
-		 	for(int i=0;i<v;i++){
-			cout<<"Node i "<<i <<" Dist "<<distance[i] <<endl;}
-          return distance[dest];
-      }
-};
+	 
+      };
 int main(){
 
 	graphs g(5);
