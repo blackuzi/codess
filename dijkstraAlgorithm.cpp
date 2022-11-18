@@ -5,49 +5,50 @@ using namespace std;
 class graphs
 {
     int v;
-    list<pair<int,int>> *g;
- 
-  public :
-      graphs(int V){
-          v=v;
-          g=new list<pair<int,int>> [v];
-      }
-      void addEdge(int u,int v,int wt){
-          g[u].push_back({v,wt});
-          g[v].push_back({u,wt});
-      }
-      int dijkstra(int scr,int dest){
-          vector<int> distance(v,INT_MAX);
-          set<pair<int,int>> s;
-          distance[scr]=0;
-          s.insert({0,scr});
-          while(!s.empty()){
-              auto it=s.begin();
-              int node=it->second;
-              int nodeDist=it->first;
-              s.erase(it);
-              for(auto nbr : g[node]){//nbr=neighbour node
-                  int nbrNode=nbr.second;
-                  int currentEdge=nbr.first;
-                  if(nodeDist+currentEdge < distance[nbrNode]){
-                      auto f=s.find({distance[nbrNode],nbrNode});
-                      if(f!=s.end()){
-                          s.erase(f);
-                      }
-                      distance[nbrNode]=nodeDist+currentEdge;
-                      s.insert({distance[nbrNode],nbrNode});
-                  }
-              }
-          }
-    
-          return distance[dest]; 
-		}
-	 
-      };
-int main(){
-
-	graphs g(5);
-	g.addEdge(0,1,1);
+    list<pair<int,int>> *adj;
+    public:
+    graphs(int V){
+        v=V;
+        adj=new list<pair<int,int>> [v];
+    }
+    void addEdge(int u,int v,int w){
+        adj[v].push_back({w,u});
+        adj[u].push_back({w,v});
+    }
+    int dijkstra(int src,int dest){
+        vector<int> dist(v,INT_MAX);
+        set<pair<int,int>> s;
+        
+        dist[src]=0;
+        s.insert({0,src});
+        
+        while(!s.empty()){
+            auto it=s.begin();
+            int node=it->second;
+            int currentDist=it->first;
+            s.erase(it);
+            for(auto nbr : adj[node]){
+                int nbrNode=nbr.second;
+                int edge=nbr.first;
+                if(currentDist+edge < dist[nbrNode]){
+                    auto f=s.find({dist[nbrNode],nbrNode});
+                    
+                    if(f!=s.end()){
+                        s.erase(f);
+                    }
+                    dist[nbrNode]=currentDist+edge;
+                    s.insert({dist[nbrNode],nbrNode});
+                }
+            }
+        }
+        
+        
+        return dist[dest];
+    }
+};
+int main() {
+   graphs g(5);
+   	g.addEdge(0,1,1);
 	g.addEdge(1,2,1);
 	g.addEdge(0,2,4);
 	g.addEdge(0,3,7);
@@ -55,4 +56,6 @@ int main(){
 	g.addEdge(3,4,3);
 
 	cout << g.dijkstra(0,4)<<endl;
+
+    return 0;
 }
